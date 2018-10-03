@@ -1,6 +1,8 @@
 from ubuntu:18.04
 MAINTAINER Andrew Sawyers <andrew@sawdog.com>
 
+COPY ./conf/default.conf /etc/rebirthdb/default.conf
+
 RUN apt-get update \
     && apt-get install -y bash wget gnupg2
 
@@ -23,9 +25,9 @@ RUN rm ./rebirthdb_2.3.6+fallback~0bionic_amd64.deb
 
 VOLUME ["/data"]
 
-WORKDIR /data
-
-CMD ["rebirthdb", "--bind", "all"]
-
 #   process cluster webui
 EXPOSE 28015 29015 8080
+
+WORKDIR /data
+
+CMD rebirthdb --bind all --config-file /etc/rebirthdb/default.conf
