@@ -1,18 +1,11 @@
-FROM alpine:3.8
+FROM ubuntu:18.04 
 MAINTAINER Andrew Sawyers <andrew@sawdog.com>
 
-COPY ./conf/default.conf /etc/rebirthdb/default.conf
+COPY ./conf/default.conf /etc/rethinkdb/default.conf
 
 ENV LANG en_US.utf8
 
-
-RUN set -ex \
-	\
-	&& apk add --no-cache --virtual .fetch-deps \
-		bash
-
-#RUN apt-get update \
-#    && apt-get install -y bash wget gnupg2
+RUN apt-get update 
 
 SHELL ["/bin/bash", "-c"]
 
@@ -27,9 +20,9 @@ SHELL ["/bin/bash", "-c"]
 
 # we have to install from locally stored deb as a temp workaround
 WORKDIR /tmp
-COPY ./deb/rethinkdb_2.3.6.srh.1.0bionic_amd64.deb ./rethinkdb_2.3.6-bionic_amd64.deb
-RUN apt install -y ./rethinkdb_2.3.6-bionic_amd64.deb \
-    && rm ./rethinkdb_2.3.6-bionic_amd64.deb
+COPY ./deb/rethinkdb_2.3.6.bionic_amd64.deb ./
+RUN apt install -y ./rethinkdb_2.3.6.bionic_amd64.deb \
+    && rm ./rethinkdb_2.3.6.bionic_amd64.deb 
 
 VOLUME ["/data"]
 
